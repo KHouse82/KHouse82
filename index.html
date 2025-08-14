@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>리얼라이프 멘토링 | RealLife Mentoring</title>
+  <meta name="description" content="자영업자·프리랜서·예비창업자를 위한 실전 멘토링 플랫폼" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1220;
+      --panel: #121a2b;
+      --muted: #8da2c0;
+      --text: #e6eefc;
+      --brand: #4f7cff; /* cobalt-ish */
+      --brand-2: #7aa2ff;
+      --accent: #22d3ee;
+      --success: #16a34a;
+      --danger: #ef4444;
+      --radius: 14px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --shadow-soft: 0 6px 16px rgba(0,0,0,.2);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0}
+    body{
+      font-family: "Pretendard", system-ui, -apple-system, Segoe UI, Roboto, Inter, sans-serif;
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(79,124,255,.18), transparent 60%),
+                  radial-gradient(900px 500px at -10% 10%, rgba(34,211,238,.12), transparent 60%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    header{
+      position:sticky;top:0;z-index:50;background:rgba(11,18,32,.7);backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;box-shadow:var(--shadow-soft)}
+    .logo span{font-weight:800}
+    .brand h1{font-size:18px;margin:0}
+    .nav a.button{padding:10px 14px;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:white;font-weight:600;box-shadow:var(--shadow-soft)}
+
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:64px 0}
+    .hero h2{font-size:40px;line-height:1.15;margin:0 0 10px}
+    .subtitle{color:var(--muted);margin-bottom:22px}
+    .badge{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(79,124,255,.15);border:1px solid rgba(79,124,255,.35);margin-bottom:14px}
+    .hero-card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.02));padding:18px;border-radius:18px;border:1px solid rgba(255,255,255,.08);box-shadow:var(--shadow)}
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .stat{background:var(--panel);border:1px solid rgba(255,255,255,.06);padding:16px;border-radius:16px}
+    .stat .k{font-size:24px;font-weight:700}
+    .cta{display:flex;gap:10px;margin-top:8px}
+    .cta .primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0;color:white;padding:12px 16px;border-radius:12px;font-weight:700;cursor:pointer}
+    .cta .ghost{background:transparent;border:1px solid rgba(255,255,255,.16);color:var(--text);padding:12px 16px;border-radius:12px;font-weight:600;cursor:pointer}
+
+    section{padding:36px 0}
+    .section-title{font-size:28px;margin:0 0 8px}
+    .section-sub{color:var(--muted);margin-top:0}
+
+    .filters{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
+    .chip{padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer}
+    .chip.active{background:linear-gradient(135deg,var(--brand),var(--brand-2));border-color:transparent}
+
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-soft)}
+    .thumb{height:150px;background:linear-gradient(135deg,rgba(79,124,255,.5),rgba(34,211,238,.4));position:relative}
+    .avatar{position:absolute;bottom:-22px;left:16px;width:56px;height:56px;border-radius:16px;border:3px solid var(--panel);background:#0e1626;display:grid;place-items:center;font-weight:800}
+    .content{padding:18px;background:var(--panel);border-top:1px solid rgba(255,255,255,.06)}
+    .meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0;color:var(--muted);font-size:13px}
+    .pill{padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);font-size:12px}
+    .card .btns{display:flex;gap:10px;margin-top:10px}
+    .btn{flex:1;padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:transparent;color:var(--text);font-weight:600;cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0}
+
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+    .panel{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:18px;border-radius:16px}
+
+    form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    label{display:block;font-weight:600;margin:10px 0 6px}
+    input,select,textarea{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0f1728;color:var(--text)}
+    textarea{min-height:120px}
+    .form-actions{display:flex;gap:10px;margin-top:12px}
+    .toast{position:fixed;right:18px;bottom:18px;background:#0f1a2e;border:1px solid rgba(255,255,255,.12);padding:14px 16px;border-radius:12px;box-shadow:var(--shadow);display:none}
+
+    .faq details{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:14px 16px;border-radius:12px}
+    .faq details+details{margin-top:10px}
+    .faq summary{cursor:pointer;font-weight:600}
+
+    footer{padding:24px 0;color:var(--muted);border-top:1px solid rgba(255,255,255,.06);margin-top:24px}
+
+    @media (max-width: 980px){
+      .hero{grid-template-columns:1fr;}
+      .cards{grid-template-columns:1fr 1fr}
+      .grid-2{grid-template-columns:1fr}
+      form .row{grid-template-columns:1fr}
+    }
+    @media (max-width: 620px){
+      .cards{grid-template-columns:1fr}
+      .hero h2{font-size:32px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo"><span>R</span></div>
+        <h1>RealLife Mentoring</h1>
+      </div>
+      <nav style="display:flex;gap:14px;align-items:center">
+        <a href="#mentors">멘토 찾기</a>
+        <a href="#apply">멘토 지원</a>
+        <a class="button" href="#book">상담 예약</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div>
+        <div class="badge">실전 경험 기반 · 1:1 맞춤 멘토링</div>
+        <h2>“현업 멘토의 노하우로 <span style="background:linear-gradient(135deg,var(--brand),var(--accent));-webkit-background-clip:text;background-clip:text;color:transparent">당신의 다음 단계</span>를 설계하세요.”</h2>
+        <p class="subtitle">자영업 · 프리랜서 · 예비창업자에게 필요한 실무 멘토링을 제공합니다. AI 추천으로 딱 맞는 멘토를 매칭받고, 채팅 상담 후 일정까지 바로 예약하세요.</p>
+        <div class="cta">
+          <button class="primary" onclick="document.getElementById('search').focus()">멘토 검색하기</button>
+          <button class="ghost" onclick="document.getElementById('apply').scrollIntoView({behavior:'smooth'})">멘토 지원</button>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-grid">
+          <div class="stat">
+            <div class="k">1,240+</div>
+            <div>누적 멘티</div>
+          </div>
+          <div class="stat">
+            <div class="k">4.9/5</div>
+            <div>만족도</div>
+          </div>
+          <div class="stat">
+            <div class="k">72시간</div>
+            <div>평균 실행 플랜 도출</div>
+          </div>
+          <div class="stat">
+            <div class="k">#창업 · #마케팅</div>
+            <div>인기 카테고리</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MENTOR LIST -->
+    <section id="mentors">
+      <h3 class="section-title">멘토 찾기</h3>
+      <p class="section-sub">키워드로 검색하거나 카테고리로 필터링하세요.</p>
+
+      <input id="search" type="search" placeholder="예: 브랜딩, 배달장사, 쇼핑몰, 회계, 세무" aria-label="멘토 검색" />
+      <div class="filters" id="filters"></div>
+      <div class="cards" id="mentorGrid"></div>
+    </section>
+
+    <!-- BOOKING / APPLY -->
+    <section class="grid-2" id="book">
+      <div class="panel">
+        <h3 class="section-title">상담 예약</h3>
+        <p class="section-sub">원하는 멘토를 선택하고 일정을 남겨주세요. 확인 후 확정 안내를 드립니다.</p>
+        <form id="bookForm">
+          <div class="row">
+            <div>
+              <label for="bf-name">이름</label>
+              <input id="bf-name" name="name" required placeholder="홍길동" />
+            </div>
+            <div>
+              <label for="bf-email">이메일</label>
+              <input id="bf-email" name="email" type="email" required placeholder="you@example.com" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="bf-mentor">멘토 선택</label>
+              <select id="bf-mentor" name="mentor" required></select>
+            </div>
+            <div>
+              <label for="bf-date">희망 일정</label>
+              <input id="bf-date" name="date" type="datetime-local" required />
+            </div>
+          </div>
+          <label for="bf-notes">요청 사항</label>
+          <textarea id="bf-notes" name="notes" placeholder="현재 상황과 목표를 간단히 적어주세요"></textarea>
+          <div class="form-actions">
+            <button class="primary btn" type="submit">예약 요청 보내기</button>
+            <button class="btn" type="reset">초기화</button>
+          </div>
+        </form>
+      </div>
+      <div class="panel" id="apply">
+        <h3 class="section-title">멘토 지원</h3>
+        <p class="section-sub">실전 경험을 공유하고 멘티의 성장을 돕고 싶다면 지원해 주세요.</p>
+        <form id="applyForm">
+          <div class="row">
+            <div>
+              <label for="af-name">이름</label>
+              <input id="af-name" name="name" required />
+            </div>
+            <div>
+              <label for="af-field">전문 분야</label>
+              <input id="af-field" name="field" required placeholder="예: 배달 장사, 샵 운영, 퍼포먼스 마케팅" />
+            </div>
+          </div>
+          <div class="row">
+            <div>
+              <label for="af-email">이메일</label>
+              <input id="af-email" name="email" type="email" required />
+            </div>
+            <div>
+              <label for="af-exp">경력 (년)</label>
+              <input id="af-exp" name="exp" type="number" min="0" required />
+            </div>
+          </div>
+          <label for="af-bio">한 줄 소개</label>
+          <textarea id="af-bio" name="bio" placeholder="성과, 업력, 멘토링 가능 주제 등을 적어주세요"></textarea>
+          <div class="form-actions">
+            <button class="primary btn" type="submit">지원서 제출</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- SOCIAL PROOF / FAQ -->
+    <section class="grid-2">
+      <div class="panel">
+        <h3 class="section-title">실제 후기</h3>
+        <div class="stat" style="margin-top:10px">
+          <div style="font-weight:700">“3회 멘토링 후 배달 매출 41% 성장, 불필요한 광고비 140만원 절감했어요.”</div>
+          <div class="meta">김OO / 치킨전문점 사장 · 2년차</div>
+        </div>
+        <div class="stat" style="margin-top:10px">
+          <div style="font-weight:700">“브랜딩 리뉴얼 로드맵 덕에 리뷰 4.3 → 4.8, 재방문율이 올라갔습니다.”</div>
+          <div class="meta">박OO / 카페 대표 · 4년차</div>
+        </div>
+      </div>
+      <div class="panel faq">
+        <h3 class="section-title">자주 묻는 질문</h3>
+        <details>
+          <summary>비용은 어떻게 되나요?</summary>
+          <p>멘토별로 상이합니다. 일반적으로 1회(60분) 5만~15만원 선이며, 패키지 구성 시 할인됩니다.</p>
+        </details>
+        <details>
+          <summary>온라인/오프라인 모두 가능한가요?</summary>
+          <p>네. 기본은 온라인(화상/전화)이며, 멘토가 허용하면 오프라인도 가능합니다.</p>
+        </details>
+        <details>
+          <summary>환불 규정은?</summary>
+          <p>48시간 전 취소 전액 환불, 24~48시간 전 50% 환불, 24시간 이내 취소는 환불 불가(예시).</p>
+        </details>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        © <span id="year"></span> RealLife Mentoring · 사업자 정보·이용약관·개인정보처리방침
+      </div>
+    </footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // --- Demo Data ---
+    const categories = [
+      "창업", "브랜딩", "마케팅", "배달/요식", "회계/세무", "쇼핑몰", "프리랜서", "카페/디저트"
+    ];
+
+    const mentors = [
+      {
+        id: "m1",
+        name: "이수연",
+        title: "브랜딩 컨설턴트",
+        tags: ["브랜딩", "마케팅"],
+        rating: 4.9,
+        sessions: 312,
+        blurb: "리브랜딩/네이밍/스토리 설계로 재방문율을 올려드립니다.",
+        price: 99000
+      },
+      {
+        id: "m2",
+        name: "김도현",
+        title: "배달 특화 자영업 멘토",
+        tags: ["배달/요식", "마케팅"],
+        rating: 4.8,
+        sessions: 421,
+        blurb: "동선·원가·리뷰관리로 배달 매출 체질 개선.",
+        price: 79000
+      },
+      {
+        id: "m3",
+        name: "박진영",
+        title: "퍼포먼스 마케터",
+        tags: ["마케팅", "쇼핑몰"],
+        rating: 4.7,
+        sessions: 210,
+        blurb: "메타/구글/네이버 광고 구조와 대시보드 세팅.",
+        price: 89000
+      },
+      {
+        id: "m4",
+        name: "정하늘",
+        title: "카페 운영 코치",
+        tags: ["카페/디저트", "창업"],
+        rating: 5.0,
+        sessions: 156,
+        blurb: "메뉴 엔지니어링과 리뷰 4.8+ 만드는 서비스.",
+        price: 69000
+      },
+      {
+        id: "m5",
+        name: "최민석",
+        title: "회계·세무 실무",
+        tags: ["회계/세무", "프리랜서"],
+        rating: 4.9,
+        sessions: 198,
+        blurb: "부가세/종소세/비용처리 실전 가이드.",
+        price: 59000
+      },
+      {
+        id: "m6",
+        name: "한지영",
+        title: "쇼핑몰 CEO",
+        tags: ["쇼핑몰", "창업"],
+        rating: 4.8,
+        sessions: 277,
+        blurb: "상품기획→상세페이지→광고까지 풀파이프라인.",
+        price: 99000
+      }
+    ];
+
+    // --- Helpers ---
+    const money = n => n.toLocaleString('ko-KR') + '원/60분';
+
+    // --- Filters ---
+    const filterWrap = document.getElementById('filters');
+    const mentorGrid = document.getElementById('mentorGrid');
+    const searchInput = document.getElementById('search');
+    const bookMentorSelect = document.getElementById('bf-mentor');
+
+    let activeTag = '전체';
+
+    function renderFilters(){
+      const tags = ['전체', ...new Set(categories)];
+      filterWrap.innerHTML = '';
+      tags.forEach(tag => {
+        const b = document.createElement('button');
+        b.className = 'chip' + (activeTag===tag?' active':'');
+        b.textContent = tag;
+        b.onclick = () => { activeTag = tag; renderMentors(); document.getElementById('mentors').scrollIntoView({behavior:'smooth'}) };
+        filterWrap.appendChild(b);
+      });
+    }
+
+    function renderMentors(){
+      const q = searchInput.value.trim().toLowerCase();
+      const list = mentors.filter(m => {
+        const byTag = (activeTag==='전체') || m.tags.includes(activeTag);
+        const byQuery = !q || [m.name, m.title, m.blurb, ...m.tags].join(' ').toLowerCase().includes(q);
+        return byTag && byQuery;
+      });
+      mentorGrid.innerHTML = '';
+      list.forEach(m => mentorGrid.appendChild(mentorCard(m)));
+      // update select
+      bookMentorSelect.innerHTML = '<option value="">멘토를 선택하세요</option>' + list.map(m=>`<option value="${m.id}">${m.name} · ${m.title}</option>`).join('');
+      if(!list.length){
+        mentorGrid.innerHTML = `<div class="panel">조건에 맞는 멘토가 없습니다. 다른 키워드/카테고리를 시도해 보세요.</div>`
+      }
+    }
+
+    function mentorCard(m){
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.innerHTML = `
+        <div class="thumb">
+          <div class="avatar">${m.name[0]}</div>
+        </div>
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline">
+            <div style="font-weight:700;font-size:18px">${m.name}</div>
+            <div class="pill">★ ${m.rating.toFixed(1)} · ${m.sessions}회</div>
+          </div>
+          <div class="meta">${m.title}</div>
+          <div style="font-size:14px">${m.blurb}</div>
+          <div class="meta">
+            ${m.tags.map(t=>`<span class="pill">#${t}</span>`).join(' ')}
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <div style="font-weight:700">${money(m.price)}</div>
+            <div class="btns">
+              <button class="btn" data-chat="${m.id}">문의</button>
+              <button class="btn primary" data-book="${m.id}">예약</button>
+            </div>
+          </div>
+        </div>`;
+      // buttons
+      c.querySelector('[data-book]').onclick = () => {
+        bookMentorSelect.value = m.id;
+        document.getElementById('book').scrollIntoView({behavior:'smooth'});
+      };
+      c.querySelector('[data-chat]').onclick = () => toast(`💬 ${m.name} 멘토에게 문의는 예약 폼에 메모로 남겨주세요.`);
+      return c;
+    }
+
+    // --- Forms ---
+    const toastEl = document.getElementById('toast');
+    function toast(msg, type='info'){
+      toastEl.textContent = msg;
+      toastEl.style.display = 'block';
+      toastEl.style.borderColor = type==='success' ? 'rgba(34,197,94,.4)' : 'rgba(255,255,255,.12)';
+      setTimeout(()=> toastEl.style.display = 'none', 3000);
+    }
+
+    document.getElementById('bookForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const data = Object.fromEntries(fd.entries());
+      if(!data.mentor){ toast('멘토를 선택해주세요.'); return; }
+      // Demo: just show a toast + clear
+      toast('✅ 예약 요청이 접수되었습니다. 이메일로 안내드릴게요!', 'success');
+      e.target.reset();
+      bookMentorSelect.innerHTML = '<option value="">멘토를 선택하세요</option>' + mentors.map(m=>`<option value="${m.id}">${m.name} · ${m.title}</option>`).join('');
+    });
+
+    document.getElementById('applyForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      toast('🙌 멘토 지원이 접수되었습니다. 검토 후 연락드릴게요!', 'success');
+      e.target.reset();
+    });
+
+    // --- Init ---
+    renderFilters();
+    renderMentors();
+    document.getElementById('year').textContent = new Date().getFullYear();
+    searchInput.addEventListener('input', renderMentors);
+  </script>
+</body>
+</html>
